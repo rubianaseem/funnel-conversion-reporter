@@ -59,3 +59,19 @@ Zero LLM calls — entirely arithmetic. Run this as often as your funnel data up
 - `FUNNEL_STAGES` at the top of the script defines your stage names and order — edit to match your actual funnel (add/remove stages freely)
 - Swap `sample_funnel_data.csv` for a live export and schedule this to run weekly for a standing funnel health check
 - If you track spend by channel, extend the script to break CAC out per channel rather than one blended number
+
+## How this runs today (and what production would add)
+
+**Trigger:** none built in — run manually (`python funnel_conversion_reporter.py --input ...`) or schedule it (weekly/monthly cron) once you've automated the data pull. It doesn't refresh itself.
+
+**Action taken:** prints the funnel report to your terminal. It does **not** push anything into Looker Studio, Slack, or email — you'd add that step to actually distribute the report.
+
+**Self-learning:** no. It's pure arithmetic (conversion rates, CAC) — no model, no learning from trends over time beyond what you compute yourself period over period.
+
+**Loop:** no persistent process — reads one period's data, reports, exits.
+
+**What a production version would add:**
+- Automated data pulls from GA4/HubSpot/Salesforce APIs instead of a manual CSV per period
+- A Slack post or email of the report to leadership on a schedule
+- Feeding output into Looker Studio as a data source, so it becomes a live dashboard rather than a point-in-time terminal report
+- Period-over-period comparison (this version only reports one period at a time)
